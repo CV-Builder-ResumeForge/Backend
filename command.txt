@@ -1,0 +1,53 @@
+# Freeze Requirements
+pip freeze > requirements.txt
+
+
+# Install Packages from requirements.txt
+pip install -r requirements.txt
+
+
+# Create and Activate Virtual Environment
+# Linux
+python3 -m venv venv
+source venv/bin/activate
+
+
+# PowerShell
+python -m venv venv
+.\venv\Scripts\Activate
+
+
+# Deactivate Virtual Environment
+deactivate
+
+# Install Packages
+pip install <package_name>
+
+# Start Django Project
+django-admin startproject <project_name>
+
+# Start Django App
+python manage.py startapp <app_name>
+
+# Run Development Server
+python3 manage.py runserver  # Linux
+python manage.py runserver   # PowerShell
+
+# Migrations
+python manage.py makemigrations
+python manage.py migrate
+
+# Create Superuser
+python manage.py createsuperuser
+
+# Collect Static Files
+python manage.py collectstatic
+
+# Check for Errors
+python manage.py check
+
+# Open Django Shell
+python manage.py shell
+
+# Run Tests
+python manage.py test

@@ -1,0 +1,55 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+
+# Django stuff
+db.sqlite3
+*.log
+*.pot
+*.py[cod]
+*.sqlite3
+
+# Static and media files (if generated dynamically)
+staticfiles/
+media/
+
+# Local environment variables
+.env
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test coverage reports
+htmlcov/
+.coverage
+*.cover
+*.coverage.*
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pytest
+.pytest_cache/
+
+# Profiling data
+.prof
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'admin_panel',
     'cv_builder',
+    'crudoncv',
 ]
 
 # AUTH_USER_MODEL = 'cv_builder.User'

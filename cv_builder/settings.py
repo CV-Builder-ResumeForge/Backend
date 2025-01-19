@@ -64,8 +64,8 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
@@ -109,7 +109,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://authentication_owner:f0OYRMJbz7AK@ep-dark-dust-a1cwcbra.ap-southeast-1.aws.neon.tech/authentication?sslmode=require',
+        default='postgresql://userAuthentication_owner:5u8YiFTClmwx@ep-cold-hill-a860o7bc.eastus2.azure.neon.tech/userAuthentication?sslmode=require',
         conn_max_age=600,  # Optional, for persistent connections
         ssl_require=True   # Optional, enforces SSL
     )
@@ -118,10 +118,10 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'authentication',
-        'USER': 'authentication_owner',
-        'PASSWORD': 'f0OYRMJbz7AK',
-        'HOST': 'ep-dark-dust-a1cwcbra.ap-southeast-1.aws.neon.tech',
+        'NAME': 'userAuthentication',
+        'USER': 'userAuthentication_owner',
+        'PASSWORD': '5u8YiFTClmwx',
+        'HOST': 'ep-cold-hill-a860o7bc.eastus2.azure.neon.tech',
         'PORT': '5432',  # Default PostgreSQL port
         'OPTIONS': {
             'sslmode': 'require',  # Ensures SSL is used

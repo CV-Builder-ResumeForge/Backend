@@ -6,6 +6,7 @@ from .models import (
     PersonalDetails, Education, Experience, Skill,
     Training, Achievement, Project, Language, Reference
 )
+from django.db import IntegrityError
 from .serializers import (
     PersonalDetailsSerializer, EducationSerializer, ExperienceSerializer,
     SkillSerializer, TrainingSerializer, AchievementSerializer,
@@ -22,6 +23,10 @@ class PersonalDetailsAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        # Check if the user already has PersonalDetails
+        if PersonalDetails.objects.filter(user=request.user).exists():
+            return Response({"error": "Personal details already exist. Use PUT to update."}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = PersonalDetailsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -61,8 +66,11 @@ class EducationAPIView(APIView):
     def post(self, request):
         serializer = EducationSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This education record already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -99,8 +107,11 @@ class ExperienceAPIView(APIView):
     def post(self, request):
         serializer = ExperienceSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This experience record already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -136,8 +147,11 @@ class SkillAPIView(APIView):
     def post(self, request):
         serializer = SkillSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This skill already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -173,8 +187,11 @@ class TrainingAPIView(APIView):
     def post(self, request):
         serializer = TrainingSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This training record already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -210,8 +227,11 @@ class AchievementAPIView(APIView):
     def post(self, request):
         serializer = AchievementSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This achievement already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -247,8 +267,11 @@ class ProjectAPIView(APIView):
     def post(self, request):
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This project already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -284,8 +307,11 @@ class LanguageAPIView(APIView):
     def post(self, request):
         serializer = LanguageSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This language skill already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
@@ -321,8 +347,11 @@ class ReferenceAPIView(APIView):
     def post(self, request):
         serializer = ReferenceSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"error": "This reference already exists."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):

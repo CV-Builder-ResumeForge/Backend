@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('admin-panel/', include('admin_panel.urls')),
+    path('super-user/', include('admin_panel.urls')),
     path('crudoncv/', include('crudoncv.urls')),
 ]
 

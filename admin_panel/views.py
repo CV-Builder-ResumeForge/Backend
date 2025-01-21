@@ -25,7 +25,7 @@ class AdminLoginAPIView(APIView):
 
             # Determine user type (Super Admin or Admin)
             if user.is_super_admin:
-                user_type = "Super Admin"
+                user_type = "SuperAdmin"
             else:
                 user_type = "Admin"
 

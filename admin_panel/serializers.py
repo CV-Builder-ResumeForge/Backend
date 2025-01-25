@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import check_password
 from accounts.models import User
+
 import logging
 
 # Set up logging
@@ -43,7 +44,10 @@ class AdminLoginSerializer(serializers.Serializer):
         return data
 
 
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'username', 'name', 'is_active', 'is_staff', 'is_admin', 'is_super_admin', 'is_verified', 'date_joined']
 
 
 

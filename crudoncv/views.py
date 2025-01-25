@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import (
     PersonalDetails, Education, Experience, Skill,
     Training, Achievement, Project, Language, Reference
@@ -15,7 +15,7 @@ from .serializers import (
 
 # Personal Details API View
 class PersonalDetailsAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         personal_details = PersonalDetails.objects.filter(user=request.user)

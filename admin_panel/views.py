@@ -9,6 +9,8 @@ from accounts.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from admin_panel.serializers import AdminLoginSerializer
+from .serializers import UserSerializer
+from rest_framework.permissions import IsAdminUser
 import logging
 
 logger = logging.getLogger(__name__)
@@ -115,3 +117,11 @@ class AdminRegisterAPIView(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+class UserListView(APIView):
+    permission_classes = [IsAdminUser]  # Only admin users can access this view
+
+    def get(self, request):
+        users = User.objects.all()  # Fetch all users
+        serializer = UserSerializer(users, many=True)  # Serialize multiple users
+        return Response(serializer.data)  # Return serialized data

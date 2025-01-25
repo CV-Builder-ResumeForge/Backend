@@ -24,13 +24,13 @@ class Education(models.Model):
     year = models.CharField(max_length=4)
     grade = models.CharField(max_length=10, blank=True, null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'institution', 'degree'],
-                name='unique_education_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'institution', 'degree'],
+    #             name='unique_education_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return f"{self.degree} at {self.institution}"
@@ -44,13 +44,13 @@ class Experience(models.Model):
     duration = models.CharField(max_length=255)  # e.g., "Jan 2020 - Dec 2022"
     description = models.TextField(blank=True, null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'company', 'position', 'duration'],
-                name='unique_experience_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'company', 'position', 'duration'],
+    #             name='unique_experience_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return f"{self.position} at {self.company}"
@@ -62,13 +62,13 @@ class Skill(models.Model):
     personal_details = models.ForeignKey(PersonalDetails, on_delete=models.CASCADE, related_name="skills")
     skill_name = models.CharField(max_length=100)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'skill_name'],
-                name='unique_skill_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'skill_name'],
+    #             name='unique_skill_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return self.skill_name
@@ -83,13 +83,13 @@ class Training(models.Model):
     date = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'training_name', 'organization'],
-                name='unique_training_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'training_name', 'organization'],
+    #             name='unique_training_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return f"{self.training_name} at {self.organization}"
@@ -103,13 +103,13 @@ class Achievement(models.Model):
     description = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'title', 'date'],
-                name='unique_achievement_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'title', 'date'],
+    #             name='unique_achievement_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return self.title
@@ -124,13 +124,13 @@ class Project(models.Model):
     link = models.URLField(blank=True, null=True)  # For external project links
     duration = models.CharField(max_length=255, blank=True, null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'project_name'],
-                name='unique_project_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'project_name'],
+    #             name='unique_project_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return self.project_name
@@ -152,13 +152,13 @@ class Language(models.Model):
         default="Basic",
     )
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'language_name', 'proficiency'],
-                name='unique_language_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'language_name', 'proficiency'],
+    #             name='unique_language_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return f"{self.language_name} ({self.proficiency})"
@@ -172,13 +172,13 @@ class Reference(models.Model):
     relationship = models.CharField(max_length=255)  # e.g., "Manager", "Colleague"
     contact = models.CharField(max_length=255)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['personal_details', 'name', 'relationship'],
-                name='unique_reference_per_user'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['personal_details', 'name', 'relationship'],
+    #             name='unique_reference_per_user'
+    #         )
+    #     ]
 
     def __str__(self):
         return f"{self.name} ({self.relationship})"

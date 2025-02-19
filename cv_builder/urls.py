@@ -19,11 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from cv_builder.view import home
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('super-user/', include('admin_panel.urls')),
     path('crudoncv/', include('crudoncv.urls')),
+    path("", home),  # Add this line
 ]
 
 # Serve media files during development

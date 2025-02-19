@@ -34,6 +34,7 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_super_admin = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
+    password_reset_code = models.CharField(max_length=6, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -64,3 +65,19 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
+
+
+class Notification(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification for {self.user.email} - {self.title}"
+
+    def mark_as_read(self):
+        self.is_read = True
+        self.save()

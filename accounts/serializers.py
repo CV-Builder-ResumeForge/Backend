@@ -1,16 +1,22 @@
 # serializers.py
 from rest_framework import serializers
-from .models import User, Profile
+from .models import User, Profile, Notification
+from django.db import models
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'username', 'name']
 
+
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # Nesting UserSerializer to include user details
+    profile_image = serializers.ImageField(required=False)  # Ensures correct serialization
+
     class Meta:
         model = Profile
-        fields = ['phone', 'date_of_birth', 'address']
+        fields = ['user', 'phone', 'date_of_birth', 'address', 'gender', 'location', 'bio', 'profile_image']
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -69,6 +75,18 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Both email/username and password are required.")
 
         return data
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = ['id', 'title', 'content', 'created_at', 'is_read']
+
+    def update(self, instance, validated_data):
+        # Mark the notification as read when requested
+        instance.is_read = validated_data.get('is_read', instance.is_read)
+        instance.save()
+        return instance
+
 
 
 class RefreshTokenSerializer(serializers.Serializer):

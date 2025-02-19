@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.hashers import check_password
-from accounts.models import User
+from accounts.models import User, Notification, Profile
 
 import logging
 
@@ -49,9 +49,34 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'username', 'name', 'is_active', 'is_staff', 'is_admin', 'is_super_admin', 'is_verified', 'date_joined']
 
+class BanUnbanUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['is_ban']
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
 
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
 
+class AddUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=6)
+    is_verified = serializers.BooleanField(default=False)  # Admin decides verification status
 
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'password', 'is_verified']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)  # Hash the password before saving
+        user.save()
+        return user
 
 
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'admin_panel',
     'cv_builder',
     'crudoncv',
+    'debug_toolbar',
 ]
 
 # AUTH_USER_MODEL = 'cv_builder.User'
@@ -70,6 +71,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -146,6 +148,7 @@ EMAIL_USE_TLS = True  # Enable TLS encryption
 EMAIL_HOST_USER = 'ramkrishnaimmortal@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'gwoexedpgaplfxac'  # Your Gmail password (use App Password for security)
 DEFAULT_FROM_EMAIL = 'ramkrishnaimmortal@gmail.com'  # The "From" email address
+
 
 
 # Password validation
@@ -266,5 +269,16 @@ LOGGING = {
         },
     },
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 
 

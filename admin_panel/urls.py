@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import AdminLoginAPIView, AdminRegisterAPIView, UserListView, DeleteUserView, \
-    BanUnbanUserView, AddUserView, UserCountView
+    BanUnbanUserView, AddUserView, UserCountView, AdminUserProfileView
 
 urlpatterns = [
     path('api/login/', AdminLoginAPIView.as_view(), name='admin-login'),
@@ -15,5 +15,7 @@ urlpatterns = [
 
     path('api/users/add/', AddUserView.as_view(), name='add-user'),
 
-    path('users/total/', UserCountView.as_view(), name='user-count'),
+    path('api/users/total/', UserCountView.as_view(), name='user-count'),
+
+    path('api/profile/<uuid:user_id>/', AdminUserProfileView.as_view(), name='admin-user-profile'),
 ]

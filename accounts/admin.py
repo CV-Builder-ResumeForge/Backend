@@ -9,11 +9,12 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'date_of_birth')
+    list_display = ('user', 'phone', 'date_of_birth', 'address', 'gender', 'location', 'bio', 'profile_image')
+
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('user', 'title', 'content', 'is_read', 'created_at')  # Columns to display in the list view
     list_filter = ('is_read', 'created_at')  # Filters to display in the sidebar
     search_fields = ('user__email', 'title', 'content')  # Allow searching by user email, title, and content
     ordering = ('-created_at',)  # Order by creation date, descending
-    readonly_fields = ('user', 'title', 'content', 'is_read', 'created_at')  # Make fields readonly in the detail view
+    # readonly_fields = ('user', 'title', 'content', 'is_read', 'created_at')  # Make fields readonly in the detail view

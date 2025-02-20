@@ -17,6 +17,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
+from rest_framework.pagination import PageNumberPagination
 import logging
 
 User = get_user_model()
@@ -126,18 +127,58 @@ class RefreshTokenView(APIView):
                 "message": "Invalid refresh token"
             }, status=status.HTTP_403_FORBIDDEN)
 
+class NotificationPagination(PageNumberPagination):
+    page_size = 10  # Default page size
+    page_size_query_param = 'limit'  # Allow clients to set limit per request
+    max_page_size = 50  # Prevent excessive requests
 
 class NotificationListView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure user is authenticated
+
     def get(self, request):
-        user = request.user  # Assuming the user is authenticated
+        user = request.user  # Get authenticated user
+        notifications = Notification.objects.filter(user=user).order_by('-created_at')  # Filter by user
 
-        # Get all notifications for the user, ordered by the latest
-        notifications = Notification.objects.filter(user=user).order_by('-created_at')
+        if not notifications:
+            return Response({"message": "No notifications found"}, status=200)
 
-        # Serialize the notifications
-        serializer = NotificationSerializer(notifications, many=True)
+        # Apply pagination
+        paginator = NotificationPagination()
+        paginated_notifications = paginator.paginate_queryset(notifications, request, view=self)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # Serialize the paginated notifications
+        serializer = NotificationSerializer(paginated_notifications, many=True)
+
+        # Return paginated response
+        return paginator.get_paginated_response(serializer.data)
+
+
+class UnreadNotificationCountView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def get(self, request):
+        # Get the authenticated user
+        user = request.user
+
+        # Filter notifications for the user that are unread (is_read=False)
+        unread_notifications_count = Notification.objects.filter(user=user, is_read=False).count()
+
+        # Return the unread notifications count as a response
+        return Response({"unread_notifications_count": unread_notifications_count})
+
+
+class MarkAllNotificationsAsReadView(APIView):
+    permission_classes = [IsAuthenticated]  # Only authenticated users can mark notifications as read
+
+    def post(self, request):
+        user = request.user  # Get the logged-in user
+        notifications = Notification.objects.filter(user=user, is_read=False)  # Fetch unread notifications
+
+        if not notifications.exists():
+            return Response({"message": "No unread notifications"}, status=status.HTTP_200_OK)
+
+        notifications.update(is_read=True)  # Mark all as read
+        return Response({"message": "All notifications marked as read"}, status=status.HTTP_200_OK)
 
 
 class NotificationReadView(APIView):

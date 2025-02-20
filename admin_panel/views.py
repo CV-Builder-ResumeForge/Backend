@@ -13,6 +13,8 @@ from .serializers import UserSerializer
 from rest_framework.permissions import IsAdminUser
 from django.shortcuts import get_object_or_404
 from accounts.models import Notification
+from accounts.models import Profile
+from accounts.serializers import ProfileSerializer
 from .permissions import IsSuperAdminUser
 import logging
 
@@ -274,3 +276,29 @@ class UserCountView(APIView):
         total_users = User.objects.count()
 
         return Response({"total_users": total_users}, status=200)
+
+
+
+class AdminUserProfileView(APIView):
+    permission_classes = [IsAdminUser]  # Restrict access to admin users only
+
+    def get(self, request, user_id):
+        """Retrieve a specific user's profile by user ID"""
+        profile = get_object_or_404(Profile, user__id=user_id)
+        serializer = ProfileSerializer(profile, context={"request": request})
+        return Response(serializer.data)
+
+    def patch(self, request, user_id):
+        """Update a specific user's profile"""
+        profile = get_object_or_404(Profile, user__id=user_id)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Profile updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, user_id):
+        """Delete a specific user's profile"""
+        profile = get_object_or_404(Profile, user__id=user_id)
+        profile.delete()
+        return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
